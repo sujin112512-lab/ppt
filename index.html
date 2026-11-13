@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>동해시 관광소개 | 바다와 산이 만나는 여행</title>
+<style>
+:root{--navy:#082b40;--blue:#087e9c;--aqua:#70d6d0;--sand:#f4e8d0;--ink:#173342}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:"Pretendard","Noto Sans KR",system-ui,sans-serif;background:#071d2a;color:white}
+.deck{height:100dvh;display:grid;place-items:center;padding:20px}
+.slide{position:relative;display:none;overflow:hidden;width:min( min(100%, calc((100dvh - 40px)*16/9)), 1440px);aspect-ratio:16/9;border-radius:22px;background:#eaf4f2;color:var(--ink);box-shadow:0 24px 80px #0008}
+.slide.active{display:block}.inner{position:relative;z-index:2;height:100%;padding:6.2% 7%;display:flex;flex-direction:column}
+.kicker{font-size:clamp(10px,1vw,15px);font-weight:800;letter-spacing:.18em;color:#087e9c;text-transform:uppercase}
+h1{font-size:clamp(34px,5.6vw,78px);line-height:1.12;letter-spacing:-.055em;margin:18px 0 16px}
+h2{font-size:clamp(27px,3.6vw,50px);line-height:1.15;letter-spacing:-.045em;margin:10px 0 14px}
+.sub{font-size:clamp(13px,1.55vw,21px);line-height:1.65;color:#49636d;max-width:760px}
+.cover{background:linear-gradient(115deg,#062d43 0%,#086783 54%,#47b5b0 100%);color:white}
+.cover .kicker,.cover .sub{color:#d6f5f0}.cover h1{max-width:800px}
+.cover .inner{justify-content:center;padding-left:9%}
+.cover .tag{display:inline-flex;margin-top:24px;padding:10px 16px;border:1px solid #ffffff66;border-radius:99px;color:#e6fffb;font-size:clamp(11px,1vw,14px)}
+.art{position:absolute;inset:0;z-index:1;pointer-events:none}
+.sun{position:absolute;width:18%;aspect-ratio:1;border-radius:50%;background:#ffd99a;right:15%;top:13%;box-shadow:0 0 90px #ffdf9b88}
+.sea{position:absolute;left:-5%;right:-5%;bottom:-8%;height:55%;background:linear-gradient(180deg,#54c7c2,#087a9c 75%);border-radius:48% 52% 0 0/18% 20% 0 0;transform:rotate(-2deg)}
+.wave{position:absolute;left:-5%;right:-5%;bottom:19%;height:22%;border-top:3px solid #c7f2e9aa;border-radius:50%;transform:rotate(-4deg)}
+.wave.w2{bottom:11%;left:15%;transform:rotate(4deg);opacity:.55}
+.coast{position:absolute;right:-3%;bottom:29%;width:42%;height:25%;background:#f4e8d0;clip-path:polygon(0 100%,14% 68%,30% 75%,43% 35%,59% 45%,72% 10%,100% 0,100% 100%)}
+.cover .art{opacity:.88}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3%;margin-top:3%;flex:1;min-height:0}
+.panel{border-radius:18px;padding:5%;background:#fff;box-shadow:0 8px 28px #17485b12;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.panel .num{font-size:clamp(11px,1vw,14px);font-weight:800;letter-spacing:.15em;color:#0b8ca1}
+.panel h3{font-size:clamp(19px,2.1vw,29px);margin:8px 0}
+.panel p{font-size:clamp(11px,1.15vw,16px);line-height:1.55;color:#58717b;margin:0}
+.visual{position:absolute;inset:0 0 34% 0;overflow:hidden;background:linear-gradient(140deg,#b9e6e1,#248eaa)}
+.visual:before,.visual:after{content:"";position:absolute;border-radius:50%}
+.visual.seaside:before{width:130%;height:75%;left:-12%;bottom:-36%;background:#087c9d}
+.visual.seaside:after{width:80%;height:45%;left:18%;bottom:-20%;border-top:3px solid #d8fbef}
+.visual.mountain{background:linear-gradient(150deg,#d4eee4,#6bb9a9)}
+.visual.mountain:before{width:90%;height:100%;left:-4%;bottom:-43%;background:#3e887c;clip-path:polygon(0 100%,40% 0,72% 100%)}
+.visual.mountain:after{width:85%;height:90%;right:-5%;bottom:-43%;background:#1d6570;clip-path:polygon(0 100%,53% 0,100% 100%)}
+.visual.city{background:linear-gradient(140deg,#f7dba9,#eaa978)}
+.visual.city:before{width:110%;height:60%;left:-5%;bottom:-25%;background:#087e9c}
+.visual.city:after{width:42%;height:70%;right:12%;bottom:-8%;background:#f9f1df;clip-path:polygon(0 100%,0 25%,35% 25%,35% 0,70% 0,70% 25%,100% 25%,100% 100%)}
+.visual.cave{background:linear-gradient(140deg,#c5d9d4,#4a777c)}
+.visual.cave:before{width:68%;height:100%;left:16%;bottom:-35%;background:#163f4b;border-radius:50% 50% 0 0}
+.visual.cave:after{width:24%;height:50%;left:38%;bottom:-10%;background:#b9e6df;border-radius:50% 50% 0 0}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:2%;margin-top:3%;flex:1;min-height:0}
+.tile{background:white;border-radius:18px;overflow:hidden;box-shadow:0 8px 28px #17485b12;display:flex;flex-direction:column}
+.tile .visual{position:relative;inset:auto;height:43%;flex:none}
+.tile .txt{padding:6%;}.tile h3{font-size:clamp(17px,1.8vw,25px);margin:0 0 8px}.tile p{font-size:clamp(10px,1.05vw,14px);line-height:1.55;color:#58717b;margin:0}
+.route{display:flex;gap:12px;align-items:stretch;margin-top:4%;flex:1}
+.stop{flex:1;background:white;border-radius:16px;padding:5% 3%;position:relative;box-shadow:0 8px 25px #17485b10}
+.stop b{display:block;color:#07849c;font-size:clamp(10px,1vw,14px);letter-spacing:.1em;margin-bottom:12px}
+.stop strong{display:block;font-size:clamp(15px,1.7vw,23px);margin-bottom:8px}
+.stop span{font-size:clamp(10px,1vw,14px);color:#5a737b;line-height:1.5}
+.arrow{align-self:center;color:#0c91a2;font-size:clamp(18px,2vw,28px)}
+.footer{position:absolute;bottom:3.2%;left:7%;right:7%;display:flex;justify-content:space-between;color:#71909a;font-size:clamp(9px,.8vw,12px);z-index:3}
+.cover .footer{color:#c5e7e4}
+.controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;z-index:10;background:#061c2acc;padding:8px 13px;border-radius:30px;backdrop-filter:blur(12px)}
+.controls button{border:0;background:#ffffff1c;color:white;border-radius:20px;padding:8px 13px;font-size:14px;cursor:pointer}
+.controls button:hover{background:#ffffff38}.counter{font-size:12px;color:#e2f3f0;min-width:48px;text-align:center}
+.source{font-size:clamp(9px,.8vw,12px);color:#78919a;margin-top:12px}
+@media(max-width:650px){.deck{padding:8px}.slide{width:100%;border-radius:12px}.inner{padding:6%}.grid{gap:2%}.panel{padding:4%}.three{gap:2%}.footer{left:6%;right:6%}.controls{bottom:8px}}
+@media print{html,body{background:white;height:auto}.deck{display:block;height:auto;padding:0}.slide,.slide.active{display:block!important;width:100%;height:auto;aspect-ratio:16/9;border-radius:0;box-shadow:none;page-break-after:always}.controls{display:none}}
+</style>
+</head>
+<body>
+<div class="deck">
+<section class="slide cover active">
+ <div class="art"><div class="sun"></div><div class="coast"></div><div class="sea"></div><div class="wave"></div><div class="wave w2"></div></div>
+ <div class="inner">
+  <div class="kicker">GANGWON STATE · EAST COAST</div>
+  <h1>바다와 산이 만나는 곳<br>동해시 여행</h1>
+  <p class="sub">푸른 동해의 일출부터 깊은 계곡의 청량함까지,<br>자연과 이야기가 이어지는 강원특별자치도 동해시</p>
+  <div class="tag">동해시 관광소개 · 5 SLIDES</div>
+ </div>
+ <div class="footer"><span>동해시 관광 안내</span><span>01 / 05</span></div>
+</section>
+<section class="slide">
+ <div class="inner">
+  <div class="kicker">01 · CITY OVERVIEW</div><h2>동해, 다섯 가지 매력을 품다</h2>
+  <p class="sub">해안과 항구, 산과 계곡, 도심 속 동굴까지. 권역별로 즐기는 다채로운 여행지입니다.</p>
+  <div class="grid">
+   <article class="panel"><div class="visual seaside"></div><div class="num">COAST</div><h3>푸른 해안</h3><p>망상·추암·한섬해변에서 만나는 탁 트인 바다와 일출</p></article>
+   <article class="panel"><div class="visual mountain"></div><div class="num">NATURE</div><h3>산과 계곡</h3><p>무릉계곡과 두타산이 선사하는 숲길·폭포·암벽 풍경</p></article>
+   <article class="panel"><div class="visual city"></div><div class="num">CULTURE</div><h3>항구와 골목</h3><p>묵호항, 논골담길에서 만나는 어촌의 생활과 감성</p></article>
+   <article class="panel"><div class="visual cave"></div><div class="num">DISCOVERY</div><h3>이색 체험</h3><p>천곡황금박쥐동굴과 무릉별유천지의 특별한 경험</p></article>
+  </div>
+ </div><div class="footer"><span>바다·자연·문화·체험이 가까이 연결된 도시</span><span>02 / 05</span></div>
+</section>
+<section class="slide">
+ <div class="inner">
+  <div class="kicker">02 · BLUE EAST SEA</div><h2>동해의 상징, 해안 절경</h2>
+  <p class="sub">일출 명소부터 여유로운 백사장까지. 바다를 따라 동해의 대표 풍경을 만납니다.</p>
+  <div class="three">
+   <article class="tile"><div class="visual seaside"></div><div class="txt"><h3>추암 촛대바위</h3><p>촛대처럼 솟은 기암과 해안 절경. 해돋이 감상과 출렁다리 산책을 함께 즐기는 명소</p></div></article>
+   <article class="tile"><div class="visual city"></div><div class="txt"><h3>묵호항·논골담길</h3><p>활기찬 항구와 벽화 골목, 묵호등대 전망이 어우러지는 감성 여행지</p></div></article>
+   <article class="tile"><div class="visual seaside"></div><div class="txt"><h3>망상해변</h3><p>넓은 백사장과 울창한 송림, 캠핑·숙박시설을 갖춘 사계절 해변 관광지</p></div></article>
+  </div>
+  <div class="source">추천: 일출은 추암해변, 산책과 항구 풍경은 묵호, 휴식과 해변 체류는 망상</div>
+ </div><div class="footer"><span>동해안의 대표 해양 관광자원</span><span>03 / 05</span></div>
+</section>
+<section class="slide">
+ <div class="inner">
+  <div class="kicker">03 · NATURE & EXPERIENCE</div><h2>숲길부터 스릴 있는 체험까지</h2>
+  <p class="sub">동해의 매력은 바다에서 끝나지 않습니다. 산악 절경과 이색 공간이 여행의 폭을 넓힙니다.</p>
+  <div class="three">
+   <article class="tile"><div class="visual mountain"></div><div class="txt"><h3>무릉계곡</h3><p>두타산·청옥산 자락의 맑은 계곡과 폭포, 삼화사와 함께하는 자연 힐링 코스</p></div></article>
+   <article class="tile"><div class="visual city"></div><div class="txt"><h3>무릉별유천지</h3><p>폐광 부지를 재생한 관광명소. 에메랄드빛 호수와 라벤더 정원, 액티비티 체험</p></div></article>
+   <article class="tile"><div class="visual cave"></div><div class="txt"><h3>천곡황금박쥐동굴</h3><p>도심 가까이에서 만나는 천연 석회암 동굴. 독특한 지형과 동굴 생태 관찰</p></div></article>
+  </div>
+  <div class="source">체험시설 운영 여부·요금·휴장일은 방문 전 동해시 관광 홈페이지에서 확인하세요.</div>
+ </div><div class="footer"><span>자연 속 휴식과 활동적인 체험을 한 번에</span><span>04 / 05</span></div>
+</section>
+<section class="slide">
+ <div class="inner">
+  <div class="kicker">04 · FOOD & TRAVEL ROUTE</div><h2>동해를 맛보고, 천천히 걷다</h2>
+  <p class="sub">항구의 신선한 해산물과 지역 시장 먹거리를 즐기고, 취향에 맞춰 하루 코스를 완성해 보세요.</p>
+  <div class="grid" style="grid-template-columns:.85fr 1.15fr">
+   <article class="panel" style="justify-content:center;background:linear-gradient(145deg,#fff,#e5f5f1)">
+    <div class="num">LOCAL TASTE</div><h3 style="font-size:clamp(22px,2.4vw,34px)">바다의 맛</h3>
+    <p>묵호항 주변에서 회와 해산물을 맛보고, 동쪽바다 중앙시장에서는 지역 먹거리와 간식을 둘러보세요.</p>
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid #d5e5e1"><b style="color:#087e9c">여행 팁</b><p style="margin-top:6px">주말·성수기에는 주차와 대기 시간을 고려해 여유 있게 이동하세요.</p></div>
+   </article>
+   <div style="display:flex;flex-direction:column;justify-content:center;gap:10px">
+    <div class="stop"><b>DAY TRIP · 추천 동선</b><strong>망상해변 → 묵호항</strong><span>해변 산책 후 항구에서 점심과 시장 구경</span></div>
+    <div class="arrow">↓</div>
+    <div class="stop"><b>AFTERNOON</b><strong>논골담길 → 도째비골 스카이밸리</strong><span>골목 풍경과 바다 전망, 체험시설 즐기기</span></div>
+    <div class="arrow">↓</div>
+    <div class="stop"><b>EVENING</b><strong>추암해변</strong><span>해안 산책으로 하루 마무리, 여건이 되면 일출 시간에 재방문</span></div>
+   </div>
+  </div>
+  <div class="source">공식 관광정보: 동해시청 관광 홈페이지 · dh.go.kr/tour</div>
+ </div><div class="footer"><span>동해에서 만나는 바다, 사람, 이야기</span><span>05 / 05</span></div>
+</section>
+</div>
+<div class="controls">
+ <button id="prev" aria-label="이전 슬라이드">← 이전</button><span class="counter" id="counter">1 / 5</span>
+ <button id="next" aria-label="다음 슬라이드">다음 →</button>
+ <button id="print" aria-label="인쇄">인쇄/PDF</button>
+</div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];let index=0;
+function show(n){index=(n+slides.length)%slides.length;slides.forEach((s,i)=>s.classList.toggle('active',i===index));document.getElementById('counter').textContent=`${index+1} / ${slides.length}`;}
+document.getElementById('prev').addEventListener('click',()=>show(index-1));
+document.getElementById('next').addEventListener('click',()=>show(index+1));
+document.getElementById('print').addEventListener('click',()=>window.print());
+document.addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();show(index+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(index-1)}});
+let startX=0;document.addEventListener('touchstart',e=>startX=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{let dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>55)show(index+(dx<0?1:-1));},{passive:true});
+</script>
+</body></html>
